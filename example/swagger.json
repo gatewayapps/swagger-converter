@@ -1,0 +1,6737 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Organization API"
+  },
+  "host": "appserver",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/x-www-form-urlencoded"
+  ],
+  "x-unimodel-info": {
+    "client-namespace": "API",
+    "client-name": "OrganizationClient",
+    "package_prefix": "gatewayapps",
+    "package": "Organization"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "userAccessToken": {
+      "type": "apiKey",
+      "name": "x-ims-authorization",
+      "in": "header"
+    },
+    "packageSecret": {
+      "type": "apiKey",
+      "name": "x-ims-package-secret",
+      "in": "header"
+    },
+    "package": {
+      "type": "apiKey",
+      "name": "x-ims-authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/timeCheck": {
+      "x-swagger-router-controller": "stateController",
+      "get": {
+        "operationId": "checkClientTime",
+        "tags": [
+          "state"
+        ],
+        "description": "Returns list of activities for packages",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved events for packages",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active package events",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+
+    },
+    "/locationCodes": {
+      "x-swagger-router-controller": "locationCodesController",
+      "get": {
+        "operationId": "getLocationCodes",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "description": "Get a list of location codes",
+        "responses": {
+          "200": {
+            "description": "List of location codes",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "saveLocationCode",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-location-codes"
+          }
+        ],
+        "description": "Save a location code",
+        "responses": {
+          "200": {
+            "description": "Saved location code",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/locationCodes/available": {
+      "x-swagger-router-controller": "locationCodesController",
+      "get": {
+        "operationId": "getAvailableLocationCodes",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "description": "Get a list of unassigned location codes",
+        "responses": {
+          "200": {
+            "description": "List of location codes",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/node/{nodeId}/locationCodes": {
+      "x-swagger-router-controller": "locationCodesController",
+      "get": {
+        "operationId": "getLocationCodesForNode",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "ID of the piece of equipment to update",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "description": "Get a list of unassigned location codes",
+        "responses": {
+          "200": {
+            "description": "List of location codes",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteLocationCodeFromNode",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-node-location-codes"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "ID of the piece of equipment to update",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "description": "Get a list of unassigned location codes",
+        "responses": {
+          "200": {
+            "description": "List of location codes",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "addLocationCodeToNode",
+        "tags": [
+          "locationCodes"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-node-location-codes"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "ID of the piece of equipment to update",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "description": "Get a list of unassigned location codes",
+        "responses": {
+          "200": {
+            "description": "List of location codes",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/equipment": {
+      "x-swagger-router-controller": "adminEquipmentController",
+      "post": {
+        "operationId": "postEquipment",
+        "x-unimodel-info": {
+          "clientMethodName": "PostEquipment"
+        },
+        "tags": [
+          "equipment",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-equipment"
+          }
+        ],
+        "description": "Creates a new piece of equipment",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the equipment to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createEquipmentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created equipment",
+            "schema": {
+              "$ref": "#/definitions/equipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating equipment",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/equipment/preload": {
+      "x-swagger-router-controller": "adminEquipmentController",
+      "get": {
+        "operationId": "getPreloadData",
+        "x-unimodel-info": {
+          "clientMethodName": "PreloadEquipmentData"
+        },
+        "tags": [
+          "equipment",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-equipment"
+          },
+          {
+            "role": "admin",
+            "action": "can-edit-equipment"
+          }
+        ],
+        "description": "Gets resource information for working with equipment such as lists of equipment types and manufacturers",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved equipment preload data",
+            "schema": {
+              "$ref": "#/definitions/getEquipmentPreloadResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving equipment preload data",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/equipment/{equipmentId}": {
+      "x-swagger-router-controller": "adminEquipmentController",
+      "put": {
+        "operationId": "putEquipment",
+        "x-unimodel-info": {
+          "clientMethodName": "PutEquipment"
+        },
+        "tags": [
+          "equipment",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-equipment"
+          }
+        ],
+        "description": "Updates piece of equipment",
+        "parameters": [
+          {
+            "name": "equipmentId",
+            "in": "path",
+            "description": "ID of the piece of equipment to update",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Properties of the equipment to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateEquipmentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created equipment",
+            "schema": {
+              "$ref": "#/definitions/equipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating equipment",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteEquipment",
+        "x-unimodel-info": {
+          "clientMethodName": "DeleteEquipment"
+        },
+        "tags": [
+          "equipment",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-delete-equipment"
+          }
+        ],
+        "description": "Deletes a piece of equipment",
+        "parameters": [
+          {
+            "name": "equipmentId",
+            "in": "path",
+            "description": "ID of the piece of equipment to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted equipment",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem deleting equipment",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/equipmentTypes": {
+      "x-swagger-router-controller": "adminEquipmentTypesController",
+      "post": {
+        "operationId": "postEquipmentType",
+        "x-unimodel-info": {
+          "clientMethodName": "PostEquipmentType"
+        },
+        "tags": [
+          "equipmentType",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-equipment-types"
+          }
+        ],
+        "description": "Creates a new equipment type",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the equipment to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createEquipmentTypeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created equipment type",
+            "schema": {
+              "$ref": "#/definitions/equipmentTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating equipment type",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/manufacturers": {
+      "x-swagger-router-controller": "adminManufacturersController",
+      "post": {
+        "operationId": "postManufacturer",
+        "x-unimodel-info": {
+          "clientMethodName": "PostManufacturer"
+        },
+        "tags": [
+          "manufacturer",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-manufacturers"
+          }
+        ],
+        "description": "Creates a new manufacturer",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the manufacturer to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createManufacturerRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created manufacturer",
+            "schema": {
+              "$ref": "#/definitions/manufacturerResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating manufacturer",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/models": {
+      "x-swagger-router-controller": "adminModelsController",
+      "post": {
+        "operationId": "postModel",
+        "x-unimodel-info": {
+          "clientMethodName": "PostModel"
+        },
+        "tags": [
+          "model",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-models"
+          }
+        ],
+        "description": "Creates a new model",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the model to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createModelRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created model",
+            "schema": {
+              "$ref": "#/definitions/modelResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating model",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/nodes/{nodeId}/tags": {
+      "x-swagger-router-controller": "adminNodeTagsController",
+      "get": {
+        "operationId": "getNodeTags",
+        "tags": [
+          "tags",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "description": "Gets the tags assigned to a node",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "Id of the node to assign the tags to",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/nodeTagsListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postNodeTags",
+        "tags": [
+          "tags",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-node-tags"
+          }
+        ],
+        "description": "Assigns tags to a node",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "Id of the node to assign the tags to",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Array of tags to assign to the node",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "packageId",
+                  "tagId"
+                ],
+                "properties": {
+                  "packageId": {
+                    "type": "string"
+                  },
+                  "tagId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/nodeTagsListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packages/{packageId}/claims/{userAccountId}": {
+      "x-swagger-router-controller": "packagesController",
+      "get": {
+        "operationId": "getUserClaimsForPackage",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "description": "Package ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "description": "User Account ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "security": [
+          {
+            "package": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user initial state",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/locations": {
+      "x-swagger-router-controller": "treesController",
+      "get": {
+        "operationId": "getLocations",
+        "tags": [
+          "trees"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved tree",
+            "schema": {
+              "$ref": "#/definitions/treeResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}": {
+      "x-swagger-router-controller": "adminTreesController",
+      "get": {
+        "operationId": "getTree",
+        "x-unimodel-info": {
+          "clientMethodName": "GetAdminTree"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "can-view-trees"
+          }
+        ],
+        "description": "Returns the tree structure for the requested tree name",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree to find",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved tree",
+            "schema": {
+              "$ref": "#/definitions/treeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving the tree",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}/nodes": {
+      "x-swagger-router-controller": "adminTreeNodesController",
+      "post": {
+        "operationId": "postTreeNode",
+        "x-unimodel-info": {
+          "clientMethodName": "CreateTreeNode"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-nodes"
+          }
+        ],
+        "description": "Creates a new node on a tree",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree to add the node in",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createTreeNodeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added tree node",
+            "schema": {
+              "$ref": "#/definitions/treeNodeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem adding the tree node",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}/nodes/{nodeId}/move": {
+      "x-swagger-router-controller": "adminTreeNodesController",
+      "put": {
+        "operationId": "moveTreeNode",
+        "x-unimodel-info": {
+          "clientMethodName": "MoveTreeNode"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-nodes"
+          }
+        ],
+        "description": "Moves a node on a tree",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree the node is in",
+            "required": true
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of the node to update",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of new parent and rank",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/moveTreeNodeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully moved tree node",
+            "schema": {
+              "$ref": "#/definitions/moveTreeNodeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem updating the tree node",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}/nodes/{nodeId}": {
+      "x-swagger-router-controller": "adminTreeNodesController",
+      "put": {
+        "operationId": "putTreeNode",
+        "x-unimodel-info": {
+          "clientMethodName": "UpdateTreeNode"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-nodes"
+          }
+        ],
+        "description": "Updates a node on a tree",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree the node is in",
+            "required": true
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of the node to update",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateTreeNodeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated tree node",
+            "schema": {
+              "$ref": "#/definitions/treeNodeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem updating the tree node",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTreeNode",
+        "x-unimodel-info": {
+          "clientMethodName": "DeleteTreeNode"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-delete-nodes"
+          }
+        ],
+        "description": "Deletes a node from a tree, if the nodes does not have any children.",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree the node is in",
+            "required": true
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of the node to update",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted tree node",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem deleting the tree node",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}/nodeTypes": {
+      "x-swagger-router-controller": "adminTreeNodeTypesController",
+      "post": {
+        "operationId": "postNodeType",
+        "x-unimodel-info": {
+          "clientMethodName": "CreateNodeType"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-create-node-types"
+          }
+        ],
+        "description": "Creates a new node type for a tree",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree to add the node in",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node type to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createNodeTypeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added tree node type",
+            "schema": {
+              "$ref": "#/definitions/nodeTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem adding the tree node type",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/trees/{treeName}/nodeTypes/{nodeTypeId}": {
+      "x-swagger-router-controller": "adminTreeNodeTypesController",
+      "put": {
+        "operationId": "putNodeType",
+        "x-unimodel-info": {
+          "clientMethodName": "UpdateNodeType"
+        },
+        "tags": [
+          "trees",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Updates a node type for a tree",
+        "parameters": [
+          {
+            "name": "treeName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the tree to update the node type in",
+            "required": true
+          },
+          {
+            "name": "nodeTypeId",
+            "in": "path",
+            "type": "string",
+            "description": "Id of the node type to be updated",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node type to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateNodeTypeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added tree node type",
+            "schema": {
+              "$ref": "#/definitions/nodeTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem adding the tree node type",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "get": {
+        "operationId": "getPackages",
+        "x-unimodel-info": {
+          "clientMethodName": "GetAdminPackages"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Returns list of packages for administration",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved packages for administration",
+            "schema": {
+              "$ref": "#/definitions/getPackagesAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active packages",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/restart": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "get": {
+        "operationId": "restartPackage",
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Package ID to restart or all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package intalled successfully",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/install": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "post": {
+        "operationId": "installPackageFromUrl",
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node type to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/installPackageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package intalled successfully",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/{packageId}": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "delete": {
+        "operationId": "deletePackage",
+        "x-unimodel-info": {
+          "clientMethodName": "DeletePackage"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Deletes a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Package deletion failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updatePackageInfo",
+        "x-unimodel-info": {
+          "clientMethodName": "UpdatePackageInfo"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Updates a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to delete"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the node type to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package updated successfully",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Package updated failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/{packageId}/activate": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "post": {
+        "operationId": "postActivatePackage",
+        "x-unimodel-info": {
+          "clientMethodName": "ActivatePackage"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Activates a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to activate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package activated successfully",
+            "schema": {
+              "$ref": "#/definitions/packageAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Package activation failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/{packageId}/deactivate": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "post": {
+        "operationId": "postDeactivatePackage",
+        "x-unimodel-info": {
+          "clientMethodName": "DeactivatePackage"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Deactivates a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to deactivate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package deactivated successfully",
+            "schema": {
+              "$ref": "#/definitions/packageAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Package deactivation failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/{packageId}/debug/on": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "post": {
+        "operationId": "postEnableDebugModePackage",
+        "x-unimodel-info": {
+          "clientMethodName": "EnableDebugModePackage"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Enables debug mode for a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to turn on debugging"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package debug mode enabled successfully",
+            "schema": {
+              "$ref": "#/definitions/packageAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Package debug mode enabling failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/packages/{packageId}/debug/off": {
+      "x-swagger-router-controller": "adminPackagesController",
+      "post": {
+        "operationId": "postDisableDebugModePackage",
+        "x-unimodel-info": {
+          "clientMethodName": "DisableDebugModePackage"
+        },
+        "tags": [
+          "packages",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "*"
+          }
+        ],
+        "description": "Disables debug mode for a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package to turn off debugging"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package debug mode disabled successfully",
+            "schema": {
+              "$ref": "#/definitions/packageAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Package debug mode disabling failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/plugins": {
+      "x-swagger-router-controller": "adminPluginsController",
+      "get": {
+        "operationId": "getPlugins",
+        "tags": [
+          "plugins",
+          "admin"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-plugins"
+          }
+        ],
+        "description": "Returns list of plugins for administration",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved plugins for administration",
+            "schema": {
+              "$ref": "#/definitions/getPluginsAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active plugins",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/plugins/install": {
+      "x-swagger-router-controller": "adminPluginsController",
+      "post": {
+        "operationId": "installPluginFromUrl",
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-plugins"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the plugin to be installed",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "url"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plugin intalled successfully",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/admin/plugins/{pluginId}": {
+      "x-swagger-router-controller": "adminPluginsController",
+      "put": {
+        "operationId": "putPlugin",
+        "tags": [
+          "admin",
+          "plugins"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-plugins"
+          }
+        ],
+        "description": "Updates a plugin",
+        "parameters": [
+          {
+            "name": "pluginId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the plugin to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/plugin"
+            },
+            "description": "Plugin details for update"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved plugins for administration",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active plugins",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "get": {
+        "operationId": "getPermissions",
+        "x-unimodel-info": {
+          "clientMethodName": "GetPermissions"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-view-permissions"
+          }
+        ],
+        "description": "Gets a list of the effective permissions for a node or user account",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "query",
+            "type": "integer",
+            "format": "int32",
+            "required": false,
+            "description": "Id of the node for permissions lookup"
+          },
+          {
+            "name": "userAccountId",
+            "in": "query",
+            "type": "integer",
+            "format": "int32",
+            "required": false,
+            "description": "Id of the user account for permissions lookup"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved package permissions.",
+            "schema": {
+              "$ref": "#/definitions/permissionsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving package permissions.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions/nodes/{nodePermissionId}": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "delete": {
+        "operationId": "deleteNodePermission",
+        "x-unimodel-info": {
+          "clientMethodName": "DeleteNodePermission"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-revoke-permissions"
+          }
+        ],
+        "description": "Removes a node permission",
+        "parameters": [
+          {
+            "name": "nodePermissionId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of the node permission to remove",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node Permissions deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem creating node permissions.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions/nodes": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "post": {
+        "operationId": "postNodePermissions",
+        "x-unimodel-info": {
+          "clientMethodName": "PostNodePermissions"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-permissions"
+          }
+        ],
+        "description": "Creates permissions for a node",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Permissions to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createNodePermissionsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissions created successfully. Response contains the new node permission objects",
+            "schema": {
+              "$ref": "#/definitions/permissionsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating node permissions.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions/userAccounts": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "post": {
+        "operationId": "postUserAccountPermissions",
+        "x-unimodel-info": {
+          "clientMethodName": "PostUserAccountPermissions"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-permissions"
+          }
+        ],
+        "description": "Creates permissions for an node",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Permissions to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createUserAccountPermissionsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissions created successfully. Response contains the new node permission objects",
+            "schema": {
+              "$ref": "#/definitions/userAccountPermissionsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating node permissions.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions/userAccounts/{userAccountPermissionId}": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "delete": {
+        "operationId": "deleteUserAccountPermission",
+        "x-unimodel-info": {
+          "clientMethodName": "DeleteUserAccountPermission"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-revoke-permissions"
+          }
+        ],
+        "description": "Removes a user account permission",
+        "parameters": [
+          {
+            "name": "userAccountPermissionId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "Id of the user account permission to remove",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Account Permission deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem deleting user account permission.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/permissions/available": {
+      "x-swagger-router-controller": "adminPermissionsController",
+      "get": {
+        "operationId": "getAvailablePermissions",
+        "x-unimodel-info": {
+          "clientMethodName": "GetAvailablePermissions"
+        },
+        "tags": [
+          "admin",
+          "permissions"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-permissions"
+          }
+        ],
+        "description": "Get a list of packages with their avaiabled roles and permissions.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved package permissions.",
+            "schema": {
+              "$ref": "#/definitions/availablePermissionsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving package permissions.",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/updates/check": {
+      "x-swagger-router-controller": "adminUpdatesController",
+      "post": {
+        "operationId": "postCheckForUpdates",
+        "tags": [
+          "admin",
+          "packages",
+          "plugins",
+          "updates"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-packages"
+          },
+          {
+            "role": "admin",
+            "action": "can-edit-plugins"
+          }
+        ],
+        "description": "Runs the check for updates process on demand",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized Request",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden Request",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/userAccounts/assign": {
+      "x-swagger-router-controller": "adminUserAccountsController",
+      "post": {
+        "operationId": "postAssignUserAccounts",
+        "x-unimodel-info": {
+          "clientMethodName": "PostAssignUserAccounts"
+        },
+        "tags": [
+          "admin",
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-users"
+          }
+        ],
+        "description": "Assigns users accounts to an organization tree node.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "UserAccountIds and parent to be the assigned.",
+            "schema": {
+              "$ref": "#/definitions/assignUserAccountsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully assigned users. Response contains the updated userAccount records.",
+            "schema": {
+              "$ref": "#/definitions/getUserAccountsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem assigning users",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/userAccounts/unassigned": {
+      "x-swagger-router-controller": "adminUserAccountsController",
+      "get": {
+        "operationId": "getUnassignedUserAccounts",
+        "x-unimodel-info": {
+          "clientMethodName": "GetUnassignedUserAccounts"
+        },
+        "tags": [
+          "admin",
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-assign-users"
+          }
+        ],
+        "description": "Gets a list of all user accounts that have not been assigned to a node in the organization tree.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved unassigned users",
+            "schema": {
+              "$ref": "#/definitions/getUserAccountsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving unassigned users",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/equipment/search": {
+      "x-swagger-router-controller": "equipmentController",
+      "post": {
+        "operationId": "searchEquipment",
+        "x-unimodel-info": {
+          "clientMethodName": "searchEquipment"
+        },
+        "tags": [
+          "equipment"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "searches for a list of equipment",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filter": {
+                  "type": "string"
+                },
+                "ancestors": {
+                  "type": "object",
+                  "properties": {
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query successful",
+            "schema": {
+              "$ref": "#/definitions/searchEquipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Problem with query",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/equipment/{equipmentId}": {
+      "x-swagger-router-controller": "equipmentController",
+      "get": {
+        "operationId": "getEquipmentById",
+        "x-unimodel-info": {
+          "clientMethodName": "GetEquipmentById"
+        },
+        "tags": [
+          "equipment"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the details for a single piece of equipment",
+        "parameters": [
+          {
+            "name": "equipmentId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of the piece of equipment to retrieve",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved equipment",
+            "schema": {
+              "$ref": "#/definitions/equipmentResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active packages",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/notifications/flush": {
+      "x-swagger-router-controller": "notificationsController",
+      "post": {
+        "operationId": "postFlushQueue",
+        "tags": [
+          "notifications"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-flush-notification-queue"
+          }
+        ],
+        "description": "Immediately trigger notification send process to run",
+        "responses": {
+          "200": {
+            "description": "Successfully ran notification send",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem sending notifications",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/notifications/test": {
+      "x-swagger-router-controller": "notificationsController",
+      "post": {
+        "operationId": "postSendTest",
+        "tags": [
+          "notifications"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Queues a test notification for the logged in user.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Test email send info",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "to": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully queued notification",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem queuing notification",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/package/migrations": {
+      "x-swagger-router-controller": "packagesController",
+      "post": {
+        "operationId": "publishPackageMigrations",
+        "tags": [
+          "packages"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Allows a package to update its permissions, tags and information",
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true
+          },
+          {
+            "name": "replacements",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/package/metadata": {
+      "x-swagger-router-controller": "packagesController",
+      "get": {
+        "operationId": "getPackageMetadata",
+        "tags": [
+          "packages"
+        ],
+        "description": "Gets package metadata",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Package id of the package"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Package metadata retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/packageMetadataResponse"
+            }
+          },
+          "400": {
+            "description": "Package metadata get failed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postPackageMetadata",
+        "tags": [
+          "packages"
+        ],
+        "description": "Allows a package to update its permissions, tags and information",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Package metadata to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "data",
+                "signature"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "packageId"
+                  ],
+                  "properties": {
+                    "packageId": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "signature": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/packages": {
+      "x-swagger-router-controller": "packagesController",
+      "get": {
+        "operationId": "getPackages",
+        "x-unimodel-info": {
+          "clientMethodName": "GetPackages"
+        },
+        "tags": [
+          "packages"
+        ],
+        "security": [
+          {
+            "packageSecret": []
+          },
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "user",
+            "action": "*"
+          }
+        ],
+        "description": "Returns a list of the active packages",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved active packages",
+            "schema": {
+              "$ref": "#/definitions/getPackagesResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active packages",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packages/{packageId}/tooltips": {
+      "x-swagger-router-controller": "packageTooltipsController",
+      "get": {
+        "operationId": "getPackageTooltips",
+        "tags": [
+          "tooltips"
+        ],
+        "description": "Gets a list of all the tooltips defined for a package",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/packageTooltipListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "savePackageTooltip",
+        "tags": [
+          "tooltips"
+        ],
+        "description": "Updates a tooltip for a package",
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "edit-tooltips"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "ID of the package"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/packageTooltip"
+            },
+            "description": "Tooltip details for update"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/packageTooltipResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/scripts": {
+      "x-swagger-router-controller": "scriptsController",
+      "get": {
+        "operationId": "getScripts",
+        "x-unimodel-info": {
+          "clientMethodName": "GetScripts"
+        },
+        "tags": [
+          "scripts"
+        ],
+        "security": [
+          {
+            "packageSecret": []
+          },
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-scripts"
+          }
+        ],
+        "description": "Returns a list of the active scripts",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved active scripts",
+            "schema": {
+              "$ref": "#/definitions/getScriptsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving active scripts",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+     "/setup/replication": {
+      "x-swagger-router-controller": "replicationController",
+      "post": {
+        "operationId": "registerSubscriber",
+        "tags": [
+          "replication"
+        ],
+        "description": "Registers the subscriber for replication of the sql server database",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Details of the subscriber",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/registerSubscriberRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully subscribed",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem subscribing",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/state/initialize": {
+      "x-swagger-router-controller": "stateController",
+      "get": {
+        "operationId": "getInitialState",
+        "tags": [
+          "state"
+        ],
+        "description": "Loads the initial state for the react application",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tags/custom": {
+      "x-swagger-router-controller": "tagsController",
+      "get": {
+        "operationId": "getCustomTags",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns a list of the available custom tags",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/tagsListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCustomTag",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-edit-custom-tags"
+          }
+        ],
+        "description": "Create or update a custom tag",
+        
+        "responses": {
+          "200": {
+            "description": "Successfully upserted",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem subscribing",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "x-swagger-router-controller": "tagsController",
+      "get": {
+        "operationId": "getTags",
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns a list of the available tags",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/tagsListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/trees": {
+      "x-swagger-router-controller": "treesController",
+      "get": {
+        "operationId": "getTrees",
+        "x-unimodel-info": {
+          "clientMethodName": "GetTrees"
+        },
+        "tags": [
+          "trees"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns a list of the available trees",
+        "responses": {
+          "200": {
+            "description": "Successfully got the list of trees",
+            "schema": {
+              "$ref": "#/definitions/treesResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving the list of trees",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/trees/parents": {
+      "x-swagger-router-controller": "treesController",
+      "get": {
+        "operationId": "getAllParents",
+        "x-unimodel-info": {
+          "clientMethodName": "GetAllParents"
+        },
+        "tags": [
+          "trees"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns an object containing key value pairs of the nodeId and the immediate parent",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved parents object",
+            "schema": {
+              "$ref": "#/definitions/treeParentsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving tree",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/trees/{treeNameOrId}": {
+      "x-swagger-router-controller": "treesController",
+      "get": {
+        "operationId": "getStructuredTree",
+        "x-unimodel-info": {
+          "clientMethodName": "GetStructuredTree"
+        },
+        "tags": [
+          "trees"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns a json object representing the structure of a tree based on the tree's name",
+        "parameters": [
+          {
+            "name": "treeNameOrId",
+            "in": "path",
+            "description": "Name or ID of the tree to get",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved tree",
+            "schema": {
+              "$ref": "#/definitions/treeStructureResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving tree",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "404": {
+            "description": "The tree name requested could not be found"
+          }
+        }
+      },
+      "post": {
+        "operationId": "postTreeQuery",
+        "x-unimodel-info": {
+          "clientMethodName": "PostTreeQuery"
+        },
+        "tags": [
+          "trees"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Performs an advanced query on a tree and returns the resulting tree structure",
+        "parameters": [
+          {
+            "name": "treeNameOrId",
+            "in": "path",
+            "description": "Name or ID of the tree to get",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Query parameters",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ancestors": {
+                  "type": "object",
+                  "properties": {
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                },
+                "nodeDetailTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved tree",
+            "schema": {
+              "$ref": "#/definitions/searchTreeResponse"
+            }
+          },
+          "400": {
+            "description": "Problem retrieving tree",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "404": {
+            "description": "The tree name requested could not be found"
+          }
+        }
+      }
+    },
+    "/userAccounts": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getUserAccounts",
+        "x-unimodel-info": {
+          "clientMethodName": "GetUserAccounts"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the user accounts",
+        "responses": {
+          "201": {
+            "description": "Successfully created the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/arrayResponseBase"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/search": {
+      "x-swagger-router-controller": "userAccountsController",
+      "post": {
+        "operationId": "searchUserAccounts",
+        "x-unimodel-info": {
+          "clientMethodName": "SearchUserAccounts"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Searches for a list of users",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filter": {
+                  "type": "string"
+                },
+                "includeTerminated": {
+                  "type": "boolean"
+                },
+                "ancestors": {
+                  "type": "object",
+                  "properties": {
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    },
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query successful",
+            "schema": {
+              "$ref": "#/definitions/searchUserAccountsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem with query",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/password/change": {
+      "x-swagger-router-controller": "userAccountsController",
+      "post": {
+        "operationId": "changePassword",
+        "x-unimodel-info": {
+          "clientMethodName": "ChangePassword"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Changes the user password with old password confirmation",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/changePasswordRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully change the user password",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem changing the user password",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/createUser": {
+      "x-swagger-router-controller": "userAccountsController",
+      "post": {
+        "operationId": "createUser",
+        "x-unimodel-info": {
+          "clientMethodName": "CreateUser"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "description": "Creates the root admin user account",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully created the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/me": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getMe",
+        "x-unimodel-info": {
+          "clientMethodName": "GetMe"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the current user's profile",
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the current user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/impersonate/{userAccountId}": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "impersonateUser",
+        "tags": [
+          "userAccounts"
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-delete-users"
+          }
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          },
+          {
+            "package": []
+          }
+        ],
+        "description": "Gets the current user's profile with nodes",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the current user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountWithNodesResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userAccountId}/full": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getFullUserAccount",
+        "x-unimodel-info": {
+          "clientMethodName": "GetFullUserAccount"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          },
+          {
+            "package": []
+          }
+        ],
+        "description": "Gets the current user's profile with nodes",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the current user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountWithNodesResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/me/packages": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getMyPackages",
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the packages for the current user. This is information for the client only. Server backends should still verify tokens before processing requests.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the packages for the user",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/me/claims": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getMeClaims",
+        "x-unimodel-info": {
+          "clientMethodName": "GetMeClaims"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the claims for the current user. This is information for the client only. Server backends should still verify tokens before processing requests.",
+        "parameters": [
+          {
+            "name": "packageid",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Instructs the request to only return the claims for the named package id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the claims for the user",
+            "schema": {
+              "$ref": "#/definitions/userAccountClaimsResponse"
+            }
+          },
+          "400": {
+            "description": "Problem creating the root admin user account",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/syncCompleted": {
+      "x-swagger-router-controller": "userAccountsController",
+      "post": {
+        "operationId": "syncCompleted",
+        "tags": [
+          "userAccounts"
+        ],
+        "description": "Endpoint called to notify the server that the user accounts sync process has completed.",
+        "responses": {
+          "200": {
+            "description": "Successfully processed sync completion",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem processing sync completion",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/{userAccountId}": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getUserAccount",
+        "x-unimodel-info": {
+          "clientMethodName": "GetUserAccount"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the current user's profile",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Problem fetching the user's profile",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateUserAccount",
+        "x-unimodel-info": {
+          "clientMethodName": "UpdateUserAccount"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the current user's profile",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updates to apply to the user's profile",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateUserAccountRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated the user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Problem updating the user's profile",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteUserAccount",
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "x-required-permissions": [
+          {
+            "role": "admin",
+            "action": "can-delete-users"
+          }
+        ],
+        "description": "Marks a user as deleted",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to delete",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the user",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "400": {
+            "description": "Problem deleting the user",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/{userAccountId}/public": {
+      "x-swagger-router-controller": "userAccountsController",
+      "get": {
+        "operationId": "getPublicUserAccount",
+        "x-unimodel-info": {
+          "clientMethodName": "GetPublicUserAccount"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Gets the public profile for a user",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the user's public profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Problem fetching the user's public profile",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userAccounts/{userAccountId}/unassign": {
+      "x-swagger-router-controller": "userAccountsController",
+      "put": {
+        "operationId": "unassignUserAccount",
+        "x-unimodel-info": {
+          "clientMethodName": "UnassignUserAccount"
+        },
+        "tags": [
+          "userAccounts"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Unassigns the user from the node",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "type": "integer",
+            "format": "int32",
+            "description": "ID of user account to fetch",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated the user's profile",
+            "schema": {
+              "$ref": "#/definitions/userAccountResponse"
+            }
+          },
+          "400": {
+            "description": "Problem updating the user's profile",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized request. Need to send valid credentials with request.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden request. Supplied credentials are not allowed to access this endpoint.",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/userStatuses": {
+      "x-swagger-router-controller": "userStatusesController",
+      "get": {
+        "operationId": "getUserStatuses",
+        "tags": [
+          "userStatuses"
+        ],
+        "security": [
+          {
+            "userAccessToken": []
+          }
+        ],
+        "description": "Returns a list of the available userStatuses",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/userStatusesListResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/responseBase"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/securityErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "equipment": {
+      "x-unimodel-info": {
+        "name": "Equipment",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "equipmentId",
+        "name",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "equipmentId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "equipmentTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modelNumber": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "equipmentType": {
+      "x-unimodel-info": {
+        "name": "EquipmentType",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "equipmentTypeId",
+        "name",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "equipmentTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "manufacturer": {
+      "x-unimodel-info": {
+        "name": "Manufacturer",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "manufacturerId",
+        "name",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "model": {
+      "x-unimodel-info": {
+        "name": "Model",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "modelId",
+        "manufacturerId",
+        "modelNumber",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "modelId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modelNumber": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "packageInfo": {
+      "x-unimodel-info": {
+        "name": "PackageInfo",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "packageId",
+        "name",
+        "version",
+        "url",
+        "author"
+      ],
+      "properties": {
+        "packageId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "statusUrl": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      }
+    },
+    "package": {
+      "x-unimodel-info": {
+        "name": "Package",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/packageInfo"
+        },
+        {
+          "type": "object",
+          "required": [
+            "debugModeEnabled",
+            "isActivated",
+            "isDeleted",
+            "createdDate",
+            "modifiedDate"
+          ],
+          "properties": {
+            "debugModeEnabled": {
+              "type": "boolean"
+            },
+            "isActivated": {
+              "type": "boolean"
+            },
+            "isCore": {
+              "type": "boolean"
+            },
+            "isDeleted": {
+              "type": "boolean"
+            },
+            "createdBy": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "createdDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "modifiedBy": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "modifiedDate": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      ]
+    },
+
+    "packagePermissionsInfo": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "PackageAvailablePermissionsInfo",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "packageId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packageRoleInfo"
+          }
+        }
+      }
+    },
+    "packageRoleInfo": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "PackageRoleInfo",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "packageRoleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roleId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/packageRolePermissionInfo"
+          }
+        }
+      }
+    },
+    "packageTooltip": {
+      "type": "object",
+      "required": [
+        "packageId",
+        "tooltipId"
+      ],
+      "properties": {
+        "packageTooltipId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "packageId": {
+          "type": "string"
+        },
+        "tooltipId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "packageMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "packageRolePermissionInfo": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "PackageRolePermissionInfo",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "packageRolePermissionId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "permissionId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "permissionBase": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "PermissionBase",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "packageId",
+        "roleId",
+        "deny"
+      ],
+      "properties": {
+        "packageId": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "string"
+        },
+        "permissionId": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "deny": {
+          "type": "boolean"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "nodePermission": {
+      "x-unimodel-info": {
+        "name": "NodePermission",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/permissionBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "nodePermissionId",
+            "nodeId"
+          ],
+          "properties": {
+            "nodePermissionId": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nodeId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "userAccountPermission": {
+      "x-unimodel-info": {
+        "name": "UserAccountPermission",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/permissionBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "userAccountPermissionId",
+            "userAccountId"
+          ],
+          "properties": {
+            "userAccountPermissionId": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "userAccountId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "nodeType": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "NodeType",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "nodeTypeId",
+        "treeId",
+        "name",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "nodeTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "treeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "Node",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "nodeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodeTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "plugin": {
+      "type": "object",
+      "required": [
+        "pluginId",
+        "name"
+      ],
+      "properties": {
+        "pluginId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "isActivated": {
+          "type": "boolean"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "required": [
+        "packageId",
+        "tagId",
+        "name"
+      ],
+      "properties": {
+        "packageId": {
+          "type": "string"
+        },
+        "tagId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isSystem": {
+          "type": "boolean"
+        }
+      }
+    },
+    "tree": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "Tree",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "treeId",
+        "name",
+        "nodes",
+        "nodeTypes"
+      ],
+      "properties": {
+        "treeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/node"
+          }
+        },
+        "nodeTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/nodeType"
+          }
+        }
+      }
+    },
+    "treeInfo": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "Tree",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "treeId",
+        "name"
+      ],
+      "properties": {
+        "treeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "treeStructureNode": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "TreeStructureNode",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "dataType",
+        "name"
+      ],
+      "properties": {
+        "dataType": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/treeStructureNode"
+          }
+        }
+      }
+    },
+    "userAccount": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UserAccount",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "userAccountId",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "userAccountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "externalId": {
+          "type": "string"
+        },
+        "homePhone": {
+          "type": "string"
+        },
+        "workPhone": {
+          "type": "string"
+        },
+        "cellPhone": {
+          "type": "string"
+        },
+        "userStatusId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "userStatus": {
+      "x-unimodel-info": {
+        "name": "UserStatus",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "type": "object",
+      "required": [
+        "userStatusId",
+        "name",
+        "isSystemDefault",
+        "isDeleted",
+        "createdBy",
+        "createdDate",
+        "modifiedBy",
+        "modifiedDate"
+      ],
+      "properties": {
+        "userStatusId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isSystemDefault": {
+          "type": "boolean"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "userAccountWithNodes": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UserAccount",
+        "namespace": "Models",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "userAccountId",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "userAccountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "externalId": {
+          "type": "string"
+        },
+        "homePhone": {
+          "type": "string"
+        },
+        "workPhone": {
+          "type": "string"
+        },
+        "cellPhone": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/node"
+          }
+        }
+      }
+    },
+    "vEquipment": {
+      "type": "object",
+      "properties": {
+        "equipmentId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "equipmentTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "equipmentType": {
+          "type": "string"
+        },
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "modelId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modelNumber": {
+          "type": "string"
+        },
+        "assetNumber": {
+          "type": "string"
+        },
+        "nodeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "areaPath": {
+          "type": "string"
+        },
+        "nodePath": {
+          "type": "string"
+        }
+      }
+    },
+    "vNodeTag": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nodeTagId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "packageId": {
+          "type": "string"
+        },
+        "tagId": {
+          "type": "string"
+        },
+        "tagName": {
+          "type": "string"
+        },
+        "isInherited": {
+          "type": "boolean"
+        },
+        "inheritedNodeId": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int32"
+        },
+        "inheritedNodeName": {
+          "type": "string"
+        },
+        "inheritedNodeNamePath": {
+          "type": "string"
+        }
+      }
+    },
+    "vNodesWithMaxDepth": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodeDetailTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nodeTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "treeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "isDeleted": {
+          "type": "boolean"
+        },
+        "MaxDepth": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "namePath": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/vNodesWithMaxDepth"
+          }
+        }
+      }
+    },
+    "vUserAccount": {
+      "type": "object",
+      "properties": {
+        "userAccountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "hireDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "positionStartDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "externalId": {
+          "type": "string"
+        },
+        "profileImageUrl": {
+          "type": "string"
+        },
+        "nodeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nodePath": {
+          "type": "string"
+        },
+        "positionPath": {
+          "type": "string"
+        }
+      }
+    },
+    "assignUserAccountsRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "AssignUserAccountsRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "userAccountIds",
+        "parent"
+      ],
+      "properties": {
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userAccountIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "changePasswordRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateUserRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "newPassword",
+        "oldPassword"
+      ],
+      "properties": {
+        "newPassword": {
+          "type": "string"
+        },
+        "oldPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "createUserRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateUserRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "username",
+        "password"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "createEquipmentRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateEquipmentRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "equipmentTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modelId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "assetNumber": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "createEquipmentTypeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateEquipmentTypeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "createManufacturerRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateManufacturerRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "createModelRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateModelRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "manufacturerId",
+        "modelNumber"
+      ],
+      "properties": {
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1
+        },
+        "modelNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "createPermissionRequestBase": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreatePermissionRequestBase",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "packageId",
+        "packageRoleId",
+        "packageRolePermissions",
+        "all",
+        "deny"
+      ],
+      "properties": {
+        "packageId": {
+          "type": "string"
+        },
+        "packageRoleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "packageRolePermissions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "all": {
+          "type": "boolean"
+        },
+        "deny": {
+          "type": "boolean"
+        },
+        "scope": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "installPackageRequest": {
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "createNodePermissionsRequest": {
+      "x-unimodel-info": {
+        "name": "CreateNodePermissionRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/createPermissionRequestBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "nodeId"
+          ],
+          "properties": {
+            "nodeId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "createUserAccountPermissionsRequest": {
+      "x-unimodel-info": {
+        "name": "CreateUserAccountPermissionRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/createPermissionRequestBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "userAccountId"
+          ],
+          "properties": {
+            "userAccountId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "createTreeNodeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateTreeNodeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "required": [
+        "name",
+        "nodeTypeId",
+        "parent"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "nodeTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "updateEquipmentRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UpdateEquipmentRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "equipmentTypeId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "manufacturerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "modelId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "assetNumber": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "updateTreeNodeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UpdateTreeNodeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "nodeTypeId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "moveTreeNodeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UpdateTreeNodeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "parent": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "createNodeTypeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "CreateNodeTypeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "updateNodeTypeRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UpdateNodeTypeRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "updateUserAccountRequest": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "UpdateUserAccountRequest",
+        "namespace": "API.Requests",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "homePhone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workPhone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cellPhone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "userStatusId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "displayName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "registerSubscriberRequest": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string"
+        }
+      }
+    },
+    "securityErrorResponse": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "SecurityErrorResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "responseBase": {
+      "type": "object",
+      "x-unimodel-info": {
+        "name": "ResponseBase",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "arrayResponseBase": {
+      "x-unimodel-info": {
+        "name": "ArrayResponseBase",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "count": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "availablePermissionsResponse": {
+      "x-unimodel-info": {
+        "name": "AvailablePermissionsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "packagePermissions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/packagePermissionsInfo"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "equipmentResponse": {
+      "x-unimodel-info": {
+        "name": "EquipmentResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "equipment": {
+              "$ref": "#/definitions/equipment"
+            }
+          }
+        }
+      ]
+    },
+    "equipmentTypeResponse": {
+      "x-unimodel-info": {
+        "name": "EquipmentTypeResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "equipmentType": {
+              "$ref": "#/definitions/equipmentType"
+            }
+          }
+        }
+      ]
+    },
+    "manufacturerResponse": {
+      "x-unimodel-info": {
+        "name": "ManufacturerResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "manufacturer": {
+              "$ref": "#/definitions/manufacturer"
+            }
+          }
+        }
+      ]
+    },
+    "modelResponse": {
+      "x-unimodel-info": {
+        "name": "ModelResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "model": {
+              "$ref": "#/definitions/model"
+            }
+          }
+        }
+      ]
+    },
+    "permissionsResponse": {
+      "x-unimodel-info": {
+        "name": "PermissionsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "permissions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/permissionBase"
+              },
+              "description": "Array of either NodePermissions or UserAccountPermissions"
+            }
+          }
+        }
+      ]
+    },
+    "userAccountPermissionsResponse": {
+      "x-unimodel-info": {
+        "name": "UserAccountPermissionsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userAccountPermissions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/userAccountPermission"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "getEquipmentPreloadResponse": {
+      "x-unimodel-info": {
+        "name": "GetEquipmentPreloadResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "required": [
+            "equipmentTypes",
+            "manufacturers",
+            "models"
+          ],
+          "properties": {
+            "equipmentTypes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/equipmentType"
+              }
+            },
+            "manufacturers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/manufacturer"
+              }
+            },
+            "models": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/model"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "getPackagesResponse": {
+      "x-unimodel-info": {
+        "name": "GetPackagesResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "packages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/packageInfo"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "getPackagesAdminResponse": {
+      "x-unimodel-info": {
+        "name": "GetPackagesAdminResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "packages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/package"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "getPluginsAdminResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "plugins": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/plugin"
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "getUserAccountsResponse": {
+      "x-unimodel-info": {
+        "name": "GetUserAccountsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userAccounts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/userAccount"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packageAdminResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "package": {
+              "$ref": "#/definitions/package"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "PackageAdminResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "moveTreeNodeResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "trees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "rank": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "parent": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "nodeTagsListResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/vNodeTag"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "nodeTypeResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "nodeType": {
+              "$ref": "#/definitions/nodeType"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "NodeTypeResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "searchEquipmentResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "equipment": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/vEquipment"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "searchTreeResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/vNodesWithMaxDepth"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "searchUserAccountsResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userAccounts": {
+              "$ref": "#/definitions/vUserAccount"
+            }
+          }
+        }
+      ]
+    },
+    "tagsListResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/tag"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "treeResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "tree": {
+              "$ref": "#/definitions/tree"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "TreeResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "treeNodeResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "node": {
+              "$ref": "#/definitions/node"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "TreeNodeResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "treeParentsResponse": {
+      "x-unimodel-info": {
+        "name": "TreeParentsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "parents": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "treesResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "trees": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/treeInfo"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "treeStructureResponse": {
+      "x-unimodel-info": {
+        "name": "TreeStructureResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      },
+      "properties": {
+        "structure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/treeStructureNode"
+          }
+        }
+      }
+    },
+    "userAccountResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userAccount": {
+              "$ref": "#/definitions/userAccount"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "UserAccountResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "userAccountWithNodesResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userAccount": {
+              "$ref": "#/definitions/userAccountWithNodes"
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "UserAccountResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "userAccountClaimsResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "claims": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "x-unimodel-info": {
+        "name": "UserAccountClaimsResponse",
+        "namespace": "API.Responses",
+        "package": "Organization",
+        "package_prefix": "gatewayapps"
+      }
+    },
+    "userStatusesListResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/userStatus"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packageTooltipResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/responseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "result": {
+              "$ref": "#/definitions/packageTooltip"
+            }
+          }
+        }
+      ]
+    },
+    "packageTooltipListResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/arrayResponseBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/packageTooltip"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
