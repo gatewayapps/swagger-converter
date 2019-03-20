@@ -28,6 +28,13 @@ namespace SwaggerConverter
 
     }
 
+    public class Parameter
+    {
+      public String Name { get; set; }
+      public Boolean Required { get; set; }
+      public String In { get; set; }
+    }
+
     public class Route
     {
       public String Path { get; set; }
@@ -52,6 +59,8 @@ namespace SwaggerConverter
       public string ActionName { get; set; }
       public String SecurityMethod { get; set; }
       public List<Permission> Permissions { get; set; } = new List<Permission>();
+
+      public List<Parameter> Parameters { get; set; } = new List<Parameter>();
     }
 
     public List<SecurityDefinition> SecurityDefinitions { get; set; } = new List<SecurityDefinition>();
@@ -90,8 +99,9 @@ namespace SwaggerConverter
           var finalPath = Path.Join(basePath, p.Key);
           finalPath = Regex.Replace(finalPath, @"{(\w+)}", ":$1");
 
-          var controller = ToPascalCase((string)p.Value["x-swagger-router-controller"]);
+          var controller = (string)p.Value["x-swagger-router-controller"];
           var route = new Route(finalPath, controller);
+
 
           foreach (string m in knownMethods)
           {
@@ -101,6 +111,7 @@ namespace SwaggerConverter
               var action = new Action() { Method = m, ActionName = (string)a.GetValue("operationId") };
               var securityOptions = (JArray)a.GetValue("security");
               var requiredPermissions = (JArray)a.GetValue("x-required-permissions");
+              var parameters = (JArray)a.GetValue("parameters");
               if (securityOptions != null && securityOptions.Count > 0)
               {
                 var so = securityOptions[0];
@@ -127,6 +138,14 @@ namespace SwaggerConverter
                 }
               }
 
+              if (parameters != null && parameters.Count > 0)
+              {
+                foreach (JObject par in parameters)
+                {
+                  action.Parameters.Add(new Parameter() { In = (string)par.GetValue("in"), Name = (string)par.GetValue("name"), Required = (bool)par.GetValue("required") });
+                }
+              }
+
 
               route.Actions.Add(action);
 
@@ -141,28 +160,5 @@ namespace SwaggerConverter
 
       return sf;
     }
-
-    public static string ToPascalCase(string s)
-    {
-      // Find word parts using the following rules:
-      // 1. all lowercase starting at the beginning is a word
-      // 2. all caps is a word.
-      // 3. first letter caps, followed by all lowercase is a word
-      // 4. the entire string must decompose into words according to 1,2,3.
-      // Note that 2&3 together ensure MPSUser is parsed as "MPS" + "User".
-
-      var m = Regex.Match(s, "^(?<word>^[a-z]+|[A-Z]+|[A-Z][a-z]+)+$");
-      var g = m.Groups["word"];
-
-      // Take each word and convert individually to TitleCase
-      // to generate the final output.  Note the use of ToLower
-      // before ToTitleCase because all caps is treated as an abbreviation.
-      var t = Thread.CurrentThread.CurrentCulture.TextInfo;
-      var sb = new StringBuilder();
-      foreach (var c in g.Captures.Cast<Capture>())
-        sb.Append(t.ToTitleCase(c.Value.ToLower()));
-      return sb.ToString();
-    }
   }
 }
-
